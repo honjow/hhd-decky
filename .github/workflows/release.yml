@@ -20,28 +20,36 @@ jobs:
     steps:
       - name: set git global safe directory
         run: |
-          pacman -Syu git npm --noconfirm
+          pacman -Syu git npm rsync --noconfirm
           git config --global --add safe.directory $(realpath .)
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: build plugin
         run: |
-          npm i -g pnpm@8.5.1
+          npm i -g pnpm
           pnpm install --no-frozen-lockfile
           pnpm run build
+          rm -f dist/*.js.map
           tar -czvf hhd-decky.tar.gz --transform 's,^,hhd-decky/,' dist backend py_modules bin *.py *.json *.md *.js LICENSE
+          mkdir -p hhd-decky
+          rsync -av --ignore-missing-args dist py_modules bin *.py *.json *.md *.js LICENSE 
+          zip -r hhd-decky.zip hhd-decky
+          rm -rf hhd-decky
         continue-on-error: true
 
       - name: show files
         run: |
           tar -tzvf hhd-decky.tar.gz
+          zip -l hhd-decky.zip
 
       - name: Publish Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: hhd-decky
-          path: hhd-decky.tar.gz
+          path: |
+            hhd-decky.tar.gz
+            hhd-decky.zip
 
   publish:
     if: startsWith(github.ref, 'refs/tags/v')
@@ -51,16 +59,18 @@ jobs:
       - run: mkdir /tmp/artifacts
 
       - name: download artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           path: /tmp/artifacts
 
       - run: ls -R /tmp/artifacts
 
       - name: publish to github release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
-          files: /tmp/artifacts/hhd-decky/hhd-decky.tar.gz
+          files: |
+            /tmp/artifacts/hhd-decky/hhd-decky.tar.gz
+            /tmp/artifacts/hhd-decky/hhd-decky.zip
           tag_name: ${{ github.ref_name }}
           body: |
             hhd-decky
