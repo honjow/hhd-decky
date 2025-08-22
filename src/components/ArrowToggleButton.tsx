@@ -17,6 +17,7 @@ const ArrowToggleButton: FC<Props> = ({ children, cacheKey }) => {
         <ButtonItem
           layout="below"
           bottomSeparator={showSliders ? "none" : "thick"}
+          // @ts-ignore
           style={{
             width: "100%",
             height: "20px",

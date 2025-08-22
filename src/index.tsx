@@ -18,9 +18,7 @@ import {
 } from "./backend/utils";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { AppDispatch, store } from "./redux-modules/store";
-import { selectCurrentGameInfo } from "./redux-modules/uiSlice";
 import {
-  selectAllHhdSettingsLoading,
   selectHhdUiVersion,
 } from "./redux-modules/hhdSlice";
 import {
@@ -32,12 +30,14 @@ import HhdState from "./components/HhdState";
 import ErrorBoundary from "./components/ErrorBoundary";
 import OtaUpdates from "./components/OtaUpdates";
 
-const Content: VFC<{ serverAPI: ServerAPI }> = ({ serverAPI }) => {
-  const { displayName } = useSelector(selectCurrentGameInfo);
-  const loading = useSelector(selectAllHhdSettingsLoading);
+const Content: VFC<{ serverAPI: ServerAPI }> = ({ }) => {
+  // const { displayName } = useSelector(selectCurrentGameInfo);
+  // const loading = useSelector(selectAllHhdSettingsLoading);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
+    console.log("About to dispatch fetchHhdSettings");
+    console.log("fetchHhdSettings:", fetchHhdSettings);
     dispatch(fetchHhdSettings());
     dispatch(fetchHhdSettingsState());
     dispatch(fetchIsSteamDeckMode());
@@ -105,9 +105,9 @@ export default definePlugin((serverApi: ServerAPI) => {
   registerServerApi(serverApi);
 
   // fetches data from hhd backend even if React component tree isn't mounted
-  store.dispatch(fetchHhdSettings());
-  store.dispatch(fetchHhdSettingsState());
-  store.dispatch(fetchIsSteamDeckMode());
+    store.dispatch(fetchHhdSettings());
+    store.dispatch(fetchHhdSettingsState());
+    store.dispatch(fetchIsSteamDeckMode());
 
   // listen to steam for changes, this runs outside of react
   const unregister = registerForAppLifetimeNotifications();

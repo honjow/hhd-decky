@@ -30,7 +30,7 @@ const getPortNum = async () => {
 const getAuthHeaders = async () => {
   const serverApi = getServerApi() as ServerAPI;
 
-  const headers = {};
+  const headers: { [key: string]: string } = {};
   const authResult = await serverApi.callPluginMethod("retrieve_hhd_token", {});
   if (authResult.success) {
     const token = `Bearer ${authResult.result}`;
@@ -49,25 +49,36 @@ export const fetchFn = async (
   url: string,
   options?: FetchFnResponseOptions
 ) => {
-  const authHeaders = await getAuthHeaders();
-  const port = await getPortNum();
-  const serverApi = getServerApi() as ServerAPI;
+  try {
+    console.log("fetchFn called with url:", url);
+    const authHeaders = await getAuthHeaders();
+    const port = await getPortNum();
+    const serverApi = getServerApi() as ServerAPI;
 
-  if (!options) {
-    options = {
-      method: "GET",
-    };
+    console.log("Port:", port, "Auth headers:", authHeaders);
+
+    if (!options) {
+      options = {
+        method: "GET",
+      };
+    }
+
+    options.headers = options?.headers
+      ? { ...options.headers, ...authHeaders }
+      : authHeaders;
+
+    const fullUrl = `http://127.0.0.1:${port}/api/v1/${url}`;
+    console.log("Making request to:", fullUrl);
+
+    const response = await serverApi.fetchNoCors(
+      fullUrl,
+      options
+    );
+
+    console.log("Response:", response);
+    return response;
+  } catch (error) {
+    console.error("fetchFn error:", error);
+    throw error;
   }
-
-  options.headers = options?.headers
-    ? { ...options.headers, ...authHeaders }
-    : authHeaders;
-
-  const response = await serverApi.fetchNoCors(
-    `http://127.0.0.1:${port}/api/v1/${url}`,
-    //@ts-ignore
-    options
-  );
-
-  return response;
 };

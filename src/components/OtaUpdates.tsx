@@ -56,6 +56,7 @@ const OtaUpdates = () => {
               const serverApi = getServerApi();
               if (serverApi) otaUpdate(serverApi);
             }}
+            // @ts-ignore
             style={{
               width: "100%",
               display: "flex",

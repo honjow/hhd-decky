@@ -7,15 +7,23 @@ import { ServerAPI } from "decky-frontend-lib";
 export const fetchHhdSettings = createAsyncThunk(
   "hhd/fetchHhdSettings",
   async () => {
-    const { result } = await fetchFn("settings");
+    console.log("fetchHhdSettings thunk started");
+    try {
+      console.log("Attempting to fetch settings...");
+      const { result } = await fetchFn("settings");
+      console.log("fetchFn result:", result);
 
-    //@ts-ignore
-    const body = result.body as string;
-    if (body && typeof body === "string") {
-      return JSON.parse(body);
+      //@ts-ignore
+      const body = result.body as string;
+      if (body && typeof body === "string") {
+        return JSON.parse(body);
+      }
+
+      return body;
+    } catch (error) {
+      console.error("fetchHhdSettings error:", error);
+      throw error;
     }
-
-    return body;
   }
 );
 
@@ -35,7 +43,7 @@ export const fetchHhdSettingsState = createAsyncThunk(
 
 export const updateHhdState = createAsyncThunk(
   "hhd/updateHhdState",
-  async ({ path, value }: { path: string; value: any }, thunkApi) => {
+  async ({ path, value }: { path: string; value: any }) => {
     const postBody = set({}, path, value);
 
     const options: FetchFnResponseOptions = {

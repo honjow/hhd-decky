@@ -47,18 +47,20 @@ class ErrorBoundary extends Component<PropsType, StateType> {
               <Field disabled label="Error">
                 {this.props.title} failed to render
               </Field>
-              <ButtonItem
-                onClick={() => {
-                  store.dispatch(fetchHhdSettings());
-                  store.dispatch(fetchHhdSettingsState());
-                  store.dispatch(fetchIsSteamDeckMode());
-                  this.setState({ hasError: false });
-                }}
-                layout="below"
-                bottomSeparator="none"
-              >
-                Refresh
-              </ButtonItem>
+              <PanelSectionRow>
+                <ButtonItem
+                  onClick={() => {
+                    store.dispatch(fetchHhdSettings());
+                    store.dispatch(fetchHhdSettingsState());
+                    store.dispatch(fetchIsSteamDeckMode());
+                    this.setState({ hasError: false });
+                  }}
+                  layout="below"
+                  bottomSeparator="none"
+                >
+                  Refresh
+                </ButtonItem>
+              </PanelSectionRow>
             </PanelSection>
           </>
         );

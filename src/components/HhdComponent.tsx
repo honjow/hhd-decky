@@ -57,9 +57,7 @@ export const shouldRenderChild = (tags: string[], isSteamDeckMode: boolean) => {
 const HhdComponent: VFC<HhdComponentType> = ({
   type,
   title,
-  childName,
   hint,
-  parentType,
   statePath,
   children,
   options,
@@ -240,6 +238,7 @@ const HhdComponent: VFC<HhdComponentType> = ({
       <PanelSectionRow>
         <ButtonItem
           onClick={() => updateState(`${statePath}`, true)}
+          // @ts-ignore
           style={{
             width: "100%",
             display: "flex",
