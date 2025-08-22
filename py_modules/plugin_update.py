@@ -1,6 +1,6 @@
 import os
 import stat
-import decky_plugin
+import decky
 import subprocess
 import urllib.request
 import json
@@ -25,7 +25,7 @@ def download_latest_build():
 
     download_url = json_data.get("assets")[0].get("browser_download_url")
 
-    decky_plugin.logger.info(download_url)
+    decky.logger.info(download_url)
 
     file_path = '/tmp/hhd-decky.tar.gz'
 
@@ -39,7 +39,7 @@ def ota_update():
     downloaded_filepath = download_latest_build()
 
     if os.path.exists(downloaded_filepath):
-        hhd_plugin_dir = f'{decky_plugin.DECKY_USER_HOME}/homebrew/plugins/hhd-decky'
+        hhd_plugin_dir = f'{decky.DECKY_USER_HOME}/homebrew/plugins/hhd-decky'
 
         try:
             # add write perms to directory
@@ -48,16 +48,16 @@ def ota_update():
             # remove old plugin
             shutil.rmtree(hhd_plugin_dir)
         except Exception as e:
-            decky_plugin.logger.error(f'ota error during removal of old plugin {e}')
+            decky.logger.error(f'ota error during removal of old plugin {e}')
 
         try:
             # extract files to decky plugins dir
-            shutil.unpack_archive(downloaded_filepath, f'{decky_plugin.DECKY_USER_HOME}/homebrew/plugins')
+            shutil.unpack_archive(downloaded_filepath, f'{decky.DECKY_USER_HOME}/homebrew/plugins')
 
             # cleanup downloaded files
             os.remove(downloaded_filepath)
         except Exception as e:
-            decky_plugin.logger.error(f'error during ota file extraction {e}')
+            decky.logger.error(f'error during ota file extraction {e}')
 
         cmd = f'echo "systemctl restart plugin_loader.service" | sh'
 

@@ -2,8 +2,9 @@
   "name": "hhd-decky",
   "version": "0.1.1",
   "description": "decky frontend for hhd",
+  "type": "module",
   "scripts": {
-    "build": "shx rm -rf dist && rollup -c",
+    "build": "rollup -c",
     "watch": "rollup -c -w",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -21,9 +22,9 @@
   "author": "Aarron Lee",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/hhd-dev/hhd-decky/issues"
+    "url": "https://github.com/honjow/hhd-decky/issues"
   },
-  "homepage": "https://github.com/hhd-dev/hhd-decky",
+  "homepage": "https://github.com/honjow/hhd-decky",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.1.0",
     "@rollup/plugin-json": "^4.1.0",
@@ -32,7 +33,6 @@
     "@rollup/plugin-typescript": "^8.5.0",
     "@types/react": "16.14.0",
     "@types/webpack": "^5.28.5",
-    "decky-frontend-lib": "^3.25.0",
     "rollup": "^2.79.2",
     "rollup-plugin-import-assets": "^1.1.1",
     "shx": "^0.3.4",
@@ -40,9 +40,13 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
+    "@decky/api": "^1.1.2",
+    "@decky/rollup": "^1.0.1",
+    "@decky/ui": "^4.10.5",
     "@reduxjs/toolkit": "^1.9.7",
     "@types/lodash": "^4.17.20",
     "lodash": "^4.17.21",
+    "merge-anything": "^6.0.6",
     "react-icons": "^4.12.0",
     "react-redux": "^8.1.3",
     "redux": "^4.2.1"
@@ -54,6 +58,5 @@
         "react-dom"
       ]
     }
-  },
-  "packageManager": "pnpm@8.15.4+sha1.c85a4305534f76d461407b59277b954bac97b5c4"
+  }
 }

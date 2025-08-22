@@ -6,7 +6,7 @@ import {
   PanelSection,
   PanelSectionRow,
   ToggleField,
-} from "decky-frontend-lib";
+} from "@decky/ui";
 import HhdSlider from "./HhdSlider";
 import { get } from "lodash";
 import HhdDropdown from "./HhdDropdown";

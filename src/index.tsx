@@ -2,22 +2,17 @@ import {
   definePlugin,
   PanelSection,
   PanelSectionRow,
-  ServerAPI,
   staticClasses,
   ToggleField,
   Field,
   ButtonItem,
-} from "decky-frontend-lib";
-import { useEffect, useState, VFC } from "react";
+} from "@decky/ui";
+import { useEffect, useState, FC } from "react";
 import { FaGamepad } from "react-icons/fa";
 import {
   registerForAppLifetimeNotifications,
   suspendEventListener,
 } from "./steamListeners";
-import {
-  // getLogInfo,
-  registerServerApi,
-} from "./backend/utils";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { AppDispatch, store } from "./redux-modules/store";
 import {
@@ -28,11 +23,10 @@ import {
   fetchHhdSettingsState,
   fetchIsSteamDeckMode,
 } from "./redux-modules/hhdAsyncThunks";
-import HhdState from "./components/HhdState";
-import ErrorBoundary from "./components/ErrorBoundary";
-import OtaUpdates from "./components/OtaUpdates";
+import { HhdState, OtaUpdates, ErrorBoundary } from "./components";
 
-const Content: VFC<{ serverAPI: ServerAPI }> = ({ }) => {
+
+const Content: FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const loading = useSelector((state: any) => state.hhd.loading.settings);
   const error = useSelector((state: any) => state.hhd.error);
@@ -80,11 +74,11 @@ const Content: VFC<{ serverAPI: ServerAPI }> = ({ }) => {
   );
 };
 
-const AppContainer: VFC<{ serverAPI: ServerAPI }> = ({ serverAPI }) => {
+const AppContainer: FC = () => {
   return (
     <Provider store={store}>
       <ErrorBoundary title="App">
-        <Content serverAPI={serverAPI} />
+        <Content />
       </ErrorBoundary>
       <ErrorBoundary title="OTA Updates">
         <OtaUpdates />
@@ -130,13 +124,12 @@ function OneTimeHddOverlayNotification() {
   );
 }
 
-export default definePlugin((serverApi: ServerAPI) => {
-  registerServerApi(serverApi);
+export default definePlugin(() => {
 
   // fetches data from hhd backend even if React component tree isn't mounted
-    store.dispatch(fetchHhdSettings());
-    store.dispatch(fetchHhdSettingsState());
-    store.dispatch(fetchIsSteamDeckMode());
+  store.dispatch(fetchHhdSettings());
+  store.dispatch(fetchHhdSettingsState());
+  store.dispatch(fetchIsSteamDeckMode());
 
   // listen to steam for changes, this runs outside of react
   const unregister = registerForAppLifetimeNotifications();
@@ -144,7 +137,7 @@ export default definePlugin((serverApi: ServerAPI) => {
 
   return {
     title: <div className={staticClasses.Title}>Handheld Daemon</div>,
-    content: <AppContainer serverAPI={serverApi} />,
+    content: <AppContainer />,
     icon: <FaGamepad />,
     onDismount() {
       unregister();

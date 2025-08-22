@@ -1,9 +1,10 @@
-import { ButtonItem, PanelSectionRow } from "decky-frontend-lib";
+import { ButtonItem, PanelSectionRow } from "@decky/ui";
 import { FC, useState } from "react";
 import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 
 type Props = {
   cacheKey: string;
+  children: React.ReactNode;
 };
 
 const ArrowToggleButton: FC<Props> = ({ children, cacheKey }) => {

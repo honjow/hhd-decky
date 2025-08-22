@@ -1,13 +1,13 @@
 import { extractCurrentGameInfo, getLogInfo } from "./backend/utils";
-import { LifetimeNotification } from "decky-frontend-lib";
 import { store } from "./redux-modules/store";
 import { resumeAction } from "./redux-modules/extraActions";
 import { uiSlice } from "./redux-modules/uiSlice";
+import { AppLifetimeNotification } from "@decky/ui/dist/globals/steam-client/GameSessions";
 
 export const registerForAppLifetimeNotifications = () => {
   const { unregister } =
     window.SteamClient.GameSessions.RegisterForAppLifetimeNotifications(
-      (data: LifetimeNotification) => {
+      (data: AppLifetimeNotification) => {
         const { bRunning: running } = data;
         const results = extractCurrentGameInfo();
 

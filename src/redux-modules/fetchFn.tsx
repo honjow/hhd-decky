@@ -1,40 +1,17 @@
-import {
-  // getLogInfo,
-  getServerApi,
-} from "../backend/utils";
-import { ServerAPI } from "decky-frontend-lib";
-
-/*
-serverApi.callServerMethod(
-  "http_request",
-  {
-    method: "POST",
-    headers: { Content-Type: 'application/json' },
-    url,
-    data: JSON.stringify(data)
-  }
-)
-*/
+import { fetchNoCors } from "@decky/api";
+import { retrieveHhdToken, retrieveHttpPort } from "../backend/utils";
 
 const getPortNum = async () => {
-  const serverApi = getServerApi() as ServerAPI;
-
-  const result = await serverApi.callPluginMethod("retrieve_http_port", {});
-  if (result.success) {
-    return `${result.result}`;
-  }
-  // default port
-  return 5335;
+  return await retrieveHttpPort() || 5335;
 };
 
 const getAuthHeaders = async () => {
-  const serverApi = getServerApi() as ServerAPI;
 
   const headers: { [key: string]: string } = {};
-  const authResult = await serverApi.callPluginMethod("retrieve_hhd_token", {});
-  if (authResult.success) {
+  const authResult = await retrieveHhdToken();
+  if (authResult) {
     // Trim whitespace from token
-    const cleanToken = String(authResult.result).trim();
+    const cleanToken = String(authResult).trim();
     const token = `Bearer ${cleanToken}`;
     headers["Authorization"] = token;
   }
@@ -55,7 +32,6 @@ export const fetchFn = async (
     console.log("fetchFn called with url:", url);
     const authHeaders = await getAuthHeaders();
     const port = await getPortNum();
-    const serverApi = getServerApi() as ServerAPI;
 
     console.log("Port:", port, "Auth headers:", authHeaders);
 
@@ -72,7 +48,7 @@ export const fetchFn = async (
     const fullUrl = `http://127.0.0.1:${port}/api/v1/${url}`;
     console.log("Making request to:", fullUrl);
 
-    const response = await serverApi.fetchNoCors(
+    const response = await fetchNoCors(
       fullUrl,
       options
     );

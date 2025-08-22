@@ -1,8 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { FetchFnResponseOptions, fetchFn } from "./fetchFn";
 import { set } from "lodash";
-import { getServerApi } from "../backend/utils";
-import { ServerAPI } from "decky-frontend-lib";
+import { isSteamDeckMode, retrievePluginVersion } from "../backend/utils";
+import { fetchNoCors } from "@decky/api";
 
 export const fetchHhdSettings = createAsyncThunk(
   "hhd/fetchHhdSettings",
@@ -10,7 +10,7 @@ export const fetchHhdSettings = createAsyncThunk(
     console.log("fetchHhdSettings thunk started");
     try {
       console.log("Attempting to fetch settings...");
-      const { result } = await fetchFn("settings");
+      const result = await fetchFn("settings");
       console.log("fetchFn result:", result);
 
       //@ts-ignore
@@ -30,7 +30,7 @@ export const fetchHhdSettings = createAsyncThunk(
 export const fetchHhdSettingsState = createAsyncThunk(
   "hhd/fetchHhdSettingsState",
   async () => {
-    const { result } = await fetchFn("state");
+    const result = await fetchFn("state");
     //@ts-ignore
     const body = result.body as string;
     if (body && typeof body === "string") {
@@ -51,7 +51,7 @@ export const updateHhdState = createAsyncThunk(
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(postBody),
     };
-    const { result } = await fetchFn("state", options);
+    const result = await fetchFn("state", options);
 
     //@ts-ignore
     const body = result.body as string;
@@ -66,42 +66,26 @@ export const updateHhdState = createAsyncThunk(
 export const fetchIsSteamDeckMode = createAsyncThunk(
   "hhd/is_steamdeck_mode",
   async () => {
-    const serverApi = getServerApi() as ServerAPI;
-
-    const result = await serverApi.callPluginMethod("is_steamdeck_mode", {});
-    if (result.success) {
-      return Boolean(result.result);
-    }
-    return false;
+    return await isSteamDeckMode() || false;
   }
 );
 
 export const fetchDeckyPluginVersion = createAsyncThunk(
   "hhd/retrieve_plugin_version",
   async () => {
-    const serverApi = getServerApi() as ServerAPI;
-
-    const result = await serverApi.callPluginMethod(
-      "retrieve_plugin_version",
-      {}
-    );
-    if (result.success) {
-      return `${result.result}`;
-    }
-    return "";
+    return retrievePluginVersion() || "";
   }
 );
 
 export const fetchLatestPluginVersion = createAsyncThunk(
   "hhd/retrieve_latest_plugin_version",
   async () => {
-    const serverApi = getServerApi() as ServerAPI;
 
-    const { result } = await serverApi.fetchNoCors(
-      'https://raw.githubusercontent.com/hhd-dev/hhd-decky/main/package.json',
+    const result = await fetchNoCors(
+      'https://raw.githubusercontent.com/honjow/hhd-decky/main/package.json',
       { method: 'GET' }
     );
-  
+
     //@ts-ignore
     const body = result.body as string;
     if (body && typeof body === 'string') {

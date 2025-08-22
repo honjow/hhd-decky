@@ -1,23 +1,38 @@
-import { ServerAPI, Router } from "decky-frontend-lib";
+import { callable } from "@decky/api";
+import { Router } from "@decky/ui";
 
-// export enum ServerAPIMethods {
-// }
+// log_to_backend
+export const logToBackend = callable<[string], void>("log_to_backend");
 
-let serverApi: undefined | ServerAPI;
+// ota_update
+export const otaUpdate = callable<[], void>("ota_update");
 
-export const registerServerApi = (s: ServerAPI) => {
-  serverApi = s;
-};
+// is_steamdeck_mode
+export const isSteamDeckMode = callable<[], boolean>("is_steamdeck_mode");
 
-export const getServerApi = () => {
-  return serverApi;
-};
+// retrieve_plugin_version
+export const retrievePluginVersion = callable<[], string>("retrieve_plugin_version");
+
+
+// get_hhd_settings
+export const getHhdSettings = callable<[], any>("get_hhd_settings");
+
+// get_hhd_settings_state
+export const getHhdSettingsState = callable<[], any>("get_hhd_settings_state");
+
+// retrieve_http_port
+export const retrieveHttpPort = callable<[], number>("retrieve_http_port");
+
+// retrieve_hhd_token
+export const retrieveHhdToken = callable<[], string>("retrieve_hhd_token");
+
+
 
 export const getLogInfo = () => (info: any) => {
   if (typeof info !== "string") {
     info = JSON.stringify(info);
   }
-  serverApi?.callPluginMethod("log_to_backend", { info });
+  logToBackend(info);
 };
 
 export const extractCurrentGameDisplayName = () =>
@@ -33,6 +48,3 @@ export const extractCurrentGameInfo = () => {
   return { displayName, currentGameId };
 };
 
-export const otaUpdate = async (serverApi: ServerAPI) => {
-  return serverApi.callPluginMethod('ota_update', {});
-};

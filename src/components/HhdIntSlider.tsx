@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { PanelSectionRow, SliderField } from "decky-frontend-lib";
+import { PanelSectionRow, SliderField } from "@decky/ui";
 
 type PropType = {
   value: number;

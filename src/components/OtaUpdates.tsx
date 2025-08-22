@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { getServerApi, otaUpdate } from "../backend/utils";
+import { otaUpdate } from "../backend/utils";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectDeckyPluginVersionNum,
@@ -10,7 +10,7 @@ import {
   Field,
   PanelSection,
   PanelSectionRow,
-} from "decky-frontend-lib";
+} from "@decky/ui";
 import { AppDispatch } from "../redux-modules/store";
 import {
   fetchDeckyPluginVersion,
@@ -53,8 +53,7 @@ const OtaUpdates = () => {
         <PanelSectionRow>
           <ButtonItem
             onClick={() => {
-              const serverApi = getServerApi();
-              if (serverApi) otaUpdate(serverApi);
+              otaUpdate();
             }}
             // @ts-ignore
             style={{

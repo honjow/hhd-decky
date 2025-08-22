@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { SliderField, NotchLabel, PanelSectionRow } from "decky-frontend-lib";
+import { SliderField, NotchLabel, PanelSectionRow } from "@decky/ui";
 
 type PropType = {
   value: number;

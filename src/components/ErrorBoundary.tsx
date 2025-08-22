@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { ButtonItem, Field, PanelSection } from "decky-frontend-lib";
+import { ButtonItem, Field, PanelSection } from "@decky/ui";
 import { Component } from "react";
 import { getLogInfo } from "../backend/utils";
 import { store } from "../redux-modules/store";

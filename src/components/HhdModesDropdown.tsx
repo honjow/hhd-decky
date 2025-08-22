@@ -1,4 +1,4 @@
-import { DropdownItem, PanelSectionRow } from "decky-frontend-lib";
+import { DropdownItem, PanelSectionRow } from "@decky/ui";
 import { FC } from "react";
 
 type DropdownProps = {
