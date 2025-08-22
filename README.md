@@ -22,12 +22,12 @@ Decky Loader and HHD must already be installed, with the hhd http server enabled
 run the following in terminal, then reboot:
 
 ```
-curl -L https://github.com/hhd-dev/hhd-decky/raw/main/install.sh | sh
+curl -L https://github.com/honjow/hhd-decky/raw/main/install.sh | sh
 ```
 
 ### Manual Install
 
-Download the latest release from the [releases page](https://github.com/hhd-dev/hhd-decky/releases)
+Download the latest release from the [releases page](https://github.com/honjow/hhd-decky/releases)
 
 Unzip the `tar.gz` file, and move the `hhd-decky` folder to your `$HOME/homebrew/plugins` directory
 
@@ -44,7 +44,7 @@ Dependencies:
 - Node.js v16.14+ 
 
 ```bash
-git clone https://github.com/hhd-dev/hhd-decky.git
+git clone https://github.com/honjow/hhd-decky.git
 
 cd hhd-decky
 
@@ -68,7 +68,7 @@ You can see an example in [reload.sh](./reload.sh)
 Or by using npm and frozen dependencies (not officially supported by Decky):
 ```bash
 # Clone and symlink to your homebrew dir
-git clone https://github.com/hhd-dev/hhd-decky.git
+git clone https://github.com/honjow/hhd-decky.git
 cd hhd-decky
 
 # Install deps and build
