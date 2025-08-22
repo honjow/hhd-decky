@@ -86,11 +86,11 @@ export const fetchLatestPluginVersion = createAsyncThunk(
       { method: 'GET' }
     );
 
-    //@ts-ignore
-    const body = result.body as string;
-    if (body && typeof body === 'string') {
-      return JSON.parse(body)['version'];
+    if (result.status === 200) {
+      const bodyJson = await result.json();
+      console.log(">>>>>>> bodyJson:", bodyJson);
+      return bodyJson["version"];
     }
-    return '';
+    return "";
   }
 );
