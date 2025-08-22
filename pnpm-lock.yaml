@@ -1039,8 +1039,8 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  tapable@2.2.2:
-    resolution: {integrity: sha512-Re10+NauLTMCudc7T5WLFLAwDhQ0JWdrMK+9B2M8zR5hRExKmsRDCBA7/aV/pNJFltmBFO5BAMlQFi/vq3nKOg==}
+  tapable@2.2.3:
+    resolution: {integrity: sha512-ZL6DDuAlRlLGghwcfmSn9sK3Hr6ArtyudlSAiCqQ6IfE+b+HHbydbYDIG15IfS5do+7XQQBdBiubF/cV2dnDzg==}
     engines: {node: '>=6'}
 
   terser-webpack-plugin@5.3.14:
@@ -1412,7 +1412,7 @@ snapshots:
   '@types/webpack@5.28.5':
     dependencies:
       '@types/node': 24.3.0
-      tapable: 2.2.2
+      tapable: 2.2.3
       webpack: 5.101.3
     transitivePeerDependencies:
       - '@swc/core'
@@ -1619,7 +1619,7 @@ snapshots:
   enhanced-resolve@5.18.3:
     dependencies:
       graceful-fs: 4.2.11
-      tapable: 2.2.2
+      tapable: 2.2.3
 
   es-module-lexer@1.7.0: {}
 
@@ -2069,7 +2069,7 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  tapable@2.2.2: {}
+  tapable@2.2.3: {}
 
   terser-webpack-plugin@5.3.14(webpack@5.101.3):
     dependencies:
@@ -2141,7 +2141,7 @@ snapshots:
       mime-types: 2.1.35
       neo-async: 2.6.2
       schema-utils: 4.3.2
-      tapable: 2.2.2
+      tapable: 2.2.3
       terser-webpack-plugin: 5.3.14(webpack@5.101.3)
       watchpack: 2.4.4
       webpack-sources: 3.3.3
