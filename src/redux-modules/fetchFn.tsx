@@ -33,7 +33,9 @@ const getAuthHeaders = async () => {
   const headers: { [key: string]: string } = {};
   const authResult = await serverApi.callPluginMethod("retrieve_hhd_token", {});
   if (authResult.success) {
-    const token = `Bearer ${authResult.result}`;
+    // Trim whitespace from token
+    const cleanToken = String(authResult.result).trim();
+    const token = `Bearer ${cleanToken}`;
     headers["Authorization"] = token;
   }
   return headers;

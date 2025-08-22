@@ -15,6 +15,15 @@ const HhdState = () => {
     useSelector(selectHhdSettings);
 
   const setState = useSetHhdState();
+  const loading = useSelector((state: any) => state.hhd.loading.settings);
+  const error = useSelector((state: any) => state.hhd.error);
+
+  console.log("Settings loading state:", loading);
+  console.log("Settings:", settings);
+  
+  if (error) {
+    console.error("Settings error:", error);
+  }
 
   return (
     <div>

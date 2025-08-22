@@ -5,6 +5,8 @@ import {
   ServerAPI,
   staticClasses,
   ToggleField,
+  Field,
+  ButtonItem,
 } from "decky-frontend-lib";
 import { useEffect, useState, VFC } from "react";
 import { FaGamepad } from "react-icons/fa";
@@ -31,9 +33,9 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import OtaUpdates from "./components/OtaUpdates";
 
 const Content: VFC<{ serverAPI: ServerAPI }> = ({ }) => {
-  // const { displayName } = useSelector(selectCurrentGameInfo);
-  // const loading = useSelector(selectAllHhdSettingsLoading);
   const dispatch = useDispatch<AppDispatch>();
+  const loading = useSelector((state: any) => state.hhd.loading.settings);
+  const error = useSelector((state: any) => state.hhd.error);
 
   useEffect(() => {
     console.log("About to dispatch fetchHhdSettings");
@@ -42,6 +44,33 @@ const Content: VFC<{ serverAPI: ServerAPI }> = ({ }) => {
     dispatch(fetchHhdSettingsState());
     dispatch(fetchIsSteamDeckMode());
   }, []);
+
+  // Show error state
+  if (loading === "failed" || error) {
+    return (
+      <>
+        <OneTimeHddOverlayNotification />
+        <PanelSection title="Settings Error">
+          <Field disabled label="Error">
+            {error || "Authentication failed"}
+          </Field>
+          <PanelSectionRow>
+            <ButtonItem
+              onClick={() => {
+                dispatch(fetchHhdSettings());
+                dispatch(fetchHhdSettingsState());
+                dispatch(fetchIsSteamDeckMode());
+              }}
+              layout="below"
+              bottomSeparator="none"
+            >
+              Refresh
+            </ButtonItem>
+          </PanelSectionRow>
+        </PanelSection>
+      </>
+    );
+  }
 
   return (
     <>

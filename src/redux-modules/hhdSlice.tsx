@@ -37,6 +37,7 @@ interface HhdState {
   settingsState?: any;
   settings?: any;
   loading: { [loadState: string]: "idle" | "pending" | "succeeded" | "failed" };
+  error?: string;
 }
 
 const initialState = {
@@ -62,6 +63,12 @@ const hhdSlice = createSlice({
     builder.addCase(fetchHhdSettings.fulfilled, (state, action) => {
       state.settings = action.payload;
       state.loading.settings = "succeeded";
+      state.error = undefined;
+    });
+    builder.addCase(fetchHhdSettings.rejected, (state, action) => {
+      state.loading.settings = "failed";
+      state.error = action.error?.message || "Authentication failed";
+      console.error("fetchHhdSettings failed:", action.error);
     });
     builder.addCase(fetchHhdSettingsState.pending, (state) => {
       state.loading.settingsState = "pending";
