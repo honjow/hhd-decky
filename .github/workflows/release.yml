@@ -18,9 +18,9 @@ jobs:
     container:
       image: archlinux:latest
     steps:
-      - name: set git global safe directory
+      - name: install dependencies
         run: |
-          pacman -Syu git npm rsync --noconfirm
+          pacman -Syu git npm rsync zip unzip --noconfirm
           git config --global --add safe.directory $(realpath .)
 
       - uses: actions/checkout@v4
@@ -31,9 +31,9 @@ jobs:
           pnpm install --no-frozen-lockfile
           pnpm run build
           rm -f dist/*.js.map
-          tar -czvf hhd-decky.tar.gz --transform 's,^,hhd-decky/,' dist backend py_modules bin *.py *.json *.md *.js LICENSE
+          tar -czvf hhd-decky.tar.gz --transform 's,^,hhd-decky/,' dist py_modules *.py *.json *.md *.js LICENSE
           mkdir -p hhd-decky
-          rsync -av --ignore-missing-args dist py_modules bin *.py *.json *.md *.js LICENSE 
+          rsync -av --ignore-missing-args dist py_modules *.py *.json *.md *.js LICENSE hhd-decky
           zip -r hhd-decky.zip hhd-decky
           rm -rf hhd-decky
         continue-on-error: true
@@ -41,7 +41,7 @@ jobs:
       - name: show files
         run: |
           tar -tzvf hhd-decky.tar.gz
-          zip -l hhd-decky.zip
+          unzip -l hhd-decky.zip
 
       - name: Publish Artifacts
         uses: actions/upload-artifact@v4
