@@ -72,9 +72,8 @@ jobs:
             /tmp/artifacts/hhd-decky/hhd-decky.tar.gz
             /tmp/artifacts/hhd-decky/hhd-decky.zip
           tag_name: ${{ github.ref_name }}
-          body: |
-            hhd-decky
-          draft: true
+          draft: false
+          generate_release_notes: true
           prerelease: contains(github.ref, 'pre')
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
