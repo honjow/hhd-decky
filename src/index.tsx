@@ -24,6 +24,7 @@ import {
   fetchIsSteamDeckMode,
 } from "./redux-modules/hhdAsyncThunks";
 import { HhdState, OtaUpdates, ErrorBoundary } from "./components";
+import { log } from "./utils";
 
 
 const Content: FC = () => {
@@ -32,8 +33,8 @@ const Content: FC = () => {
   const error = useSelector((state: any) => state.hhd.error);
 
   useEffect(() => {
-    console.log("About to dispatch fetchHhdSettings");
-    console.log("fetchHhdSettings:", fetchHhdSettings);
+    log("About to dispatch fetchHhdSettings");
+    log("fetchHhdSettings:", fetchHhdSettings);
     dispatch(fetchHhdSettings());
     dispatch(fetchHhdSettingsState());
     dispatch(fetchIsSteamDeckMode());

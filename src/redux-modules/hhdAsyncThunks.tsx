@@ -3,26 +3,21 @@ import { FetchFnResponseOptions, fetchFn } from "./fetchFn";
 import { set } from "lodash";
 import { isSteamDeckMode, retrievePluginVersion } from "../backend/utils";
 import { fetchNoCors } from "@decky/api";
+import { error, log } from "../utils";
 
 export const fetchHhdSettings = createAsyncThunk(
   "hhd/fetchHhdSettings",
   async () => {
-    console.log("fetchHhdSettings thunk started");
+    log("fetchHhdSettings thunk started");
     try {
-      console.log("Attempting to fetch settings...");
+      log("Attempting to fetch settings...");
       const result = await fetchFn("settings");
-      console.log("fetchFn result:", result);
+      log("fetchFn result:", result);
 
-      //@ts-ignore
-      const body = result.body as string;
-      if (body && typeof body === "string") {
-        return JSON.parse(body);
-      }
-
-      return body;
-    } catch (error) {
-      console.error("fetchHhdSettings error:", error);
-      throw error;
+      return result;
+    } catch (e) {
+      error("fetchHhdSettings error:", e);
+      throw e;
     }
   }
 );
@@ -31,13 +26,7 @@ export const fetchHhdSettingsState = createAsyncThunk(
   "hhd/fetchHhdSettingsState",
   async () => {
     const result = await fetchFn("state");
-    //@ts-ignore
-    const body = result.body as string;
-    if (body && typeof body === "string") {
-      return JSON.parse(body);
-    }
-
-    return body;
+    return result;
   }
 );
 
@@ -53,13 +42,7 @@ export const updateHhdState = createAsyncThunk(
     };
     const result = await fetchFn("state", options);
 
-    //@ts-ignore
-    const body = result.body as string;
-    if (body && typeof body === "string") {
-      return JSON.parse(body);
-    }
-
-    return body;
+    return result;
   }
 );
 
@@ -88,7 +71,7 @@ export const fetchLatestPluginVersion = createAsyncThunk(
 
     if (result.status === 200) {
       const bodyJson = await result.json();
-      console.log(">>>>>>> bodyJson:", bodyJson);
+      log(">>>>>>> bodyJson:", bodyJson);
       return bodyJson["version"];
     }
     return "";

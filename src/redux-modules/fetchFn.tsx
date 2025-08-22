@@ -1,5 +1,6 @@
 import { fetchNoCors } from "@decky/api";
 import { retrieveHhdToken, retrieveHttpPort } from "../backend/utils";
+import { log, error } from "../utils";
 
 const getPortNum = async () => {
   return await retrieveHttpPort() || 5335;
@@ -29,11 +30,11 @@ export const fetchFn = async (
   options?: FetchFnResponseOptions
 ) => {
   try {
-    console.log("fetchFn called with url:", url);
+    log("fetchFn called with url:", url);
     const authHeaders = await getAuthHeaders();
     const port = await getPortNum();
 
-    console.log("Port:", port, "Auth headers:", authHeaders);
+    log("Port:", port, "Auth headers:", authHeaders);
 
     if (!options) {
       options = {
@@ -46,17 +47,22 @@ export const fetchFn = async (
       : authHeaders;
 
     const fullUrl = `http://127.0.0.1:${port}/api/v1/${url}`;
-    console.log("Making request to:", fullUrl);
+    log("Making request to:", fullUrl);
 
     const response = await fetchNoCors(
       fullUrl,
       options
     );
 
-    console.log("Response:", response);
-    return response;
-  } catch (error) {
-    console.error("fetchFn error:", error);
+    if (response.status === 200) {
+      const bodyJson = await response.json();
+      log(">>>>>>> bodyJson:", bodyJson);
+      return bodyJson;
+    }
+    return `Error: fetchFn ${url} failed with status ${response.status}`;
+
+  } catch (e) {
+    error("fetchFn error:", e);
     throw error;
   }
 };

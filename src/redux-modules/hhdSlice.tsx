@@ -7,6 +7,7 @@ import {
 } from "./hhdAsyncThunks";
 import { RootState } from "./store";
 import { get } from "lodash";
+import { error } from "../utils";
 
 export type SettingType =
   | "bool"
@@ -68,7 +69,7 @@ const hhdSlice = createSlice({
     builder.addCase(fetchHhdSettings.rejected, (state, action) => {
       state.loading.settings = "failed";
       state.error = action.error?.message || "Authentication failed";
-      console.error("fetchHhdSettings failed:", action.error);
+      error("fetchHhdSettings failed:", action.error);
     });
     builder.addCase(fetchHhdSettingsState.pending, (state) => {
       state.loading.settingsState = "pending";

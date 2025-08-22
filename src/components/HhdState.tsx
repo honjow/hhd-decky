@@ -7,6 +7,7 @@ import {
 } from "../redux-modules/hhdSlice";
 import HhdComponent, { shouldRenderChild, renderChild } from "./HhdComponent";
 import { useSetHhdState } from "../hooks/controller";
+import { log } from "../utils";
 
 const HhdState = () => {
   const state = useSelector(selectHhdSettingsState);
@@ -18,11 +19,11 @@ const HhdState = () => {
   const loading = useSelector((state: any) => state.hhd.loading.settings);
   const error = useSelector((state: any) => state.hhd.error);
 
-  console.log("Settings loading state:", loading);
-  console.log("Settings:", settings);
+  log("Settings loading state:", loading);
+  log("Settings:", settings);
   
   if (error) {
-    console.error("Settings error:", error);
+    error("Settings error:", error);
   }
 
   return (
